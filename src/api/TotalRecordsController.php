@@ -55,7 +55,7 @@ class TotalRecordsController extends Controller
             $defaultColor = array("rgba($brandColor, 1)", "#ffcc5c","#91e8e1","#ff6f69","#88d8b0","#b088d8","#d8b088", "#88b0d8", "#6f69ff","#7cb5ec","#434348","#90ed7d","#8085e9","#f7a35c","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1","#E27D60","#85DCB","#E8A87C","#C38D9E","#41B3A3","#67c4a7","#992667","#ff4040","#ff7373","#d2d2d2");
             if(isset($request->series)){
                 foreach($request->series as $seriesKey => $serieslist){
-                    $seriesData = (object) $serieslist;
+                    $seriesData = (object) (is_array($serieslist) ? $serieslist : json_decode($serieslist, true));
                     $filter = (object) $seriesData->filter;
                     $labelList[$seriesKey] = $seriesData->label;
                     if(empty($filter->value)&&isset($filter->operator)&&($filter->operator=='IS NULL' || $filter->operator=='IS NOT NULL')) {
@@ -64,7 +64,7 @@ class TotalRecordsController extends Controller
                         $seriesSql .= ", SUM(CASE WHEN ";
                         $countFilter = count((array) $filter);
                         foreach($filter as $keyFilter => $listFilter){
-                            $listFilter = (object) $listFilter;
+                            $listFilter = (object) (is_array($listFilter) ? $listFilter : json_decode($listFilter, true));
                             $seriesSql .= " ".$listFilter->key." ".($listFilter->operator ?? "=")." '".addslashes($listFilter->value)."' ";
                             $seriesSql .= $countFilter-1 != $keyFilter ? " AND " : "";
                         }
@@ -238,7 +238,7 @@ class TotalRecordsController extends Controller
             if(isset($request->series)){
                 $countKey = 0;
                 foreach($request->series as $sKey => $sData){
-                    $dataSeries = (object) $sData;
+                    $dataSeries = (object) (is_array($sData) ? $sData : json_decode($sData, true));
                     $filter = (object) $dataSeries->filter;
                     $yAxis[$sKey]['label'] = $dataSeries->label;
                     if(isset($dataSeries->fill)){
