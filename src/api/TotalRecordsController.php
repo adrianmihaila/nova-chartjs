@@ -66,7 +66,7 @@ class TotalRecordsController extends Controller
                         foreach($filter as $keyFilter => $listFilter){
                             $listFilter = (object) (is_array($listFilter) ? $listFilter : json_decode($listFilter, true));
                             $seriesSql .= " ".$listFilter->key." ".($listFilter->operator ?? "=")." '".addslashes($listFilter->value)."' ";
-                            $seriesSql .= $countFilter-1 != $keyFilter ? " AND " : "";
+                            $seriesSql .= $countFilter-1 != $keyFilter ? " OR " : "";
                         }
                         $seriesSql .= "then ".$calculation." else 0 end) as \"".addslashes($labelList[$seriesKey])."\"";
                     } else {
