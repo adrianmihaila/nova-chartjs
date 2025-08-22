@@ -1,19 +1,20 @@
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import AnnotationPlugin from 'chartjs-plugin-annotation';
 import { Chart, registerables } from 'chart.js';
 
-import StackedChart from './components/StackedChart'
-import BarChart from './components/BarChart'
-import LineChart from './components/StripeChart'
-import DoughnutChart from './components/DoughnutChart'
-import PieChart from './components/PieChart'
-import PolarAreaChart from './components/PolarAreaChart'
-import ScatterChart from './components/ScatterChart'
+import StackedChart from './components/StackedChart';
+import BarChart from './components/BarChart';
+import LineChart from './components/StripeChart';
+import DoughnutChart from './components/DoughnutChart';
+import PieChart from './components/PieChart';
+import PolarAreaChart from './components/PolarAreaChart';
+import ScatterChart from './components/ScatterChart';
 
 Nova.booting((Vue) => {
-    const textColor = getComputedStyle(document.documentElement)
-        .getPropertyValue('--colors-gray-400');
+    const textColor = getComputedStyle(document.documentElement).getPropertyValue('--colors-gray-400');
 
-    Chart.unregister(ChartDataLabels);
+    //   Chart.register(ChartDataLabels);
+    Chart.register(AnnotationPlugin);
     Chart.register(...registerables);
     Chart.defaults.color = `rgba(${textColor}, 1)`;
 
@@ -24,5 +25,4 @@ Nova.booting((Vue) => {
     Vue.component('pie-chart', PieChart);
     Vue.component('polar-area-chart', PolarAreaChart);
     Vue.component('scatter-chart', ScatterChart);
-})
-
+});
